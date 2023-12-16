@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">La Última Vez</string>
-    <string name="title">Título</string>
-    <string name="description">Descripción</string>
-    <string name="timestamp">Fecha</string>
-    <string name="last_time_message">La última vez que lo hiciste fue</string>
-    <string name="add">Añadir</string>
-    <string name="edit">Editar</string>
+    <string name="text_title">Título</string>
+    <string name="text_description">Descripción</string>
+    <string name="text_timestamp">Fecha</string>
+    <string name="msg_last_time">La última vez que lo hiciste fue</string>
+    <string name="text_add">Añadir</string>
+    <string name="text_edit">Editar</string>
+    <string name="msg_again">Ups, lo hice de nuevo</string>
+    <string name="msg_renew">Renovado correctamente</string>
+    <string name="msg_error_on_renew">Error al renovar</string>
+    <string name="msg_added">Añadida</string>
+    <string name="msg_error_on_add">Error en la creación</string>
 </resources>

@@ -1,9 +1,16 @@
 <resources>
     <string name="app_name">The Last Time</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="timestamp">Timestamp</string>
-    <string name="last_time_message">The last time you did it was</string>
-    <string name="add">Add</string>
-    <string name="edit">Edit</string>
+    <string name="text_title">Title</string>
+    <string name="text_description">Description</string>
+    <string name="text_timestamp">Timestamp</string>
+    <string name="msg_last_time">The last time you did it was</string>
+    <string name="text_add">Add</string>
+    <string name="text_edit">Edit</string>
+    <string name="msg_again">Oops, I did it again</string>
+    <string name="msg_renew">Renewed successfuly</string>
+    <string name="msg_error_on_renew">Error while renewing</string>
+    <string name="msg_added">Added</string>
+    <string name="msg_error_on_add">Error while adding</string>
+    <!-- Strings used for fragments for navigation -->
+
 </resources>
