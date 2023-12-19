@@ -1,6 +1,7 @@
 package com.uma.lasttime;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -141,8 +142,8 @@ public class DetailsTaskActivity extends AppCompatActivity {
     }
 
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.updateButton: updateTimestamp(); break;
+        if (view.getId() == R.id.updateButton) {
+            updateTimestamp();
         }
     }
 
@@ -155,6 +156,11 @@ public class DetailsTaskActivity extends AppCompatActivity {
 
         generateToast(db.insert(TaskContract.TimestampEntry.TABLE_NAME, null, values));
         finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 
     private void generateToast(long info) {

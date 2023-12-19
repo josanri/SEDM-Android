@@ -13,22 +13,25 @@
         android:layout_height="52dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="24dp"
+        android:autofillHints=""
         android:ems="10"
         android:inputType="text"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitleCreate"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/textTitleCreate" />
 
     <TextView
         android:id="@+id/app_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/app_name"
+        android:textSize="34sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +43,7 @@
         android:layout_marginTop="148dp"
         android:labelFor="@id/editTextDescriptionCreate"
         android:text="@string/text_description"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitleCreate" />
 
@@ -51,6 +55,7 @@
         android:layout_marginTop="88dp"
         android:labelFor="@id/editTextTitleCreate"
         android:text="@string/text_title"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -72,13 +77,14 @@
         android:layout_width="341dp"
         android:layout_height="293dp"
         android:layout_marginTop="20dp"
+        android:autofillHints=""
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textDescriptionCreate"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/textDescriptionCreate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
