@@ -20,7 +20,8 @@ public class TaskDbHelper extends SQLiteOpenHelper {
                     TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DATE," +
                     TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " INTEGER," +
                     "FOREIGN KEY(" + TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + ") REFERENCES " +
-                    TaskContract.TaskEntry.TABLE_NAME + "(" + TaskContract.TaskEntry._ID + "))";
+                    TaskContract.TaskEntry.TABLE_NAME + "(" + TaskContract.TaskEntry._ID + ") " +
+                    "ON DELETE CASCADE )";
 
     private static final String SQL_DELETE_TASK_ENTRIES =
             "DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE_NAME;
