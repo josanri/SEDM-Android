@@ -18,7 +18,9 @@ public class TaskDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + TaskContract.TimestampEntry.TABLE_NAME + " (" +
                     TaskContract.TimestampEntry._ID + " INTEGER PRIMARY KEY," +
                     TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DATE," +
-                    TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " INTEGER)";
+                    TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " INTEGER," +
+                    "FOREIGN KEY(" + TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + ") REFERENCES " +
+                    TaskContract.TaskEntry.TABLE_NAME + "(" + TaskContract.TaskEntry._ID + "))";
 
     private static final String SQL_DELETE_TASK_ENTRIES =
             "DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE_NAME;
