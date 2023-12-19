@@ -1,7 +1,6 @@
 package com.uma.lasttime;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +16,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private SQLiteDatabase db;
     private EditText titleEdit;
     private EditText descriptionEdit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +29,6 @@ public class CreateTaskActivity extends AppCompatActivity {
     }
 
     public void addNewTask(View v) {
-        Toast toast;
         boolean error;
         ContentValues values;
         String title, description;
@@ -49,10 +48,7 @@ public class CreateTaskActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), R.string.msg_error_on_renew, Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), R.string.msg_added, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            overridePendingTransition(0, 0);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
+            finish();
         }
     }
 

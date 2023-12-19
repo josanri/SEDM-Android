@@ -14,4 +14,7 @@
     <string name="msg_error_on_add">Error en la creación</string>
     <string name="not_done">No realizada</string>
     <string name="last_done">Ultima vez realizada</string>
+    <string name="msg_remove_task">¿Quieres eliminar esta tarea?</string>
+    <string name="msg_yes">Sí</string>
+    <string name="msg_no">No</string>
 </resources>

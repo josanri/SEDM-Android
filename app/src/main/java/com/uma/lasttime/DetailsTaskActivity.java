@@ -1,7 +1,6 @@
 package com.uma.lasttime;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.ContentValues;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.uma.lasttime.db.TaskContract;
@@ -24,7 +24,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DetailsTaskActivity extends AppCompatActivity {
-    private TaskDbHelper taskDbHelper;
     private SQLiteDatabase db;
 
     private int taskId;
@@ -37,7 +36,7 @@ public class DetailsTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_task);
 
-        taskDbHelper = new TaskDbHelper(getApplicationContext());
+        TaskDbHelper taskDbHelper = new TaskDbHelper(getApplicationContext());
         db = taskDbHelper.getWritableDatabase();
 
         getTaskIdFromBundle();
@@ -76,7 +75,7 @@ public class DetailsTaskActivity extends AppCompatActivity {
                 TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION
         };
         String where = TaskContract.TaskEntry._ID + " = ?";
-        String[] whereArgs = { taskId + "" };
+        String[] whereArgs = {taskId + ""};
 
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, columns, where, whereArgs, null, null, null);
         String taskTitle = "";
@@ -98,7 +97,7 @@ public class DetailsTaskActivity extends AppCompatActivity {
                 TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION
         };
         String where = TaskContract.TaskEntry._ID + " = ?";
-        String[] whereArgs = { taskId + "" };
+        String[] whereArgs = {taskId + ""};
 
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, columns, where, whereArgs, null, null, null);
         String taskDescription = "";
@@ -121,28 +120,32 @@ public class DetailsTaskActivity extends AppCompatActivity {
                 TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID
         };
         String where = TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " = ?";
-        String[] whereArgs = { taskId + "" };
+        String[] whereArgs = {taskId + ""};
+        String orderBy = TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DESC";
 
         ArrayList<String> arrayList = new ArrayList<>();
-        Cursor cursor = db.query(TaskContract.TimestampEntry.TABLE_NAME, columns, where, whereArgs, null, null, null);
-        try {
+        try (Cursor cursor = db.query(TaskContract.TimestampEntry.TABLE_NAME, columns, where, whereArgs, null, null, orderBy)) {
             while (cursor.moveToNext()) {
                 long timestampInMillis = cursor.getLong(cursor.getColumnIndex(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP));
-                Date date = new Date(timestampInMillis);
-                java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-                SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
-                String formattedDate = dateFormat.format(date) + " " + clockFormat.format(date);
+                String formattedDate = getFormattedDate(timestampInMillis);
                 arrayList.add(formattedDate);
             }
-        } finally {
-            cursor.close();
         }
 
         ArrayAdapter<String> arrayAdapter;
-        arrayAdapter = new ArrayAdapter<>(this ,
-                android.R.layout.simple_list_item_1 ,
+        arrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
                 arrayList);
         listViewTimestamps.setAdapter(arrayAdapter);
+    }
+
+    @NonNull
+    private String getFormattedDate(long timestampInMillis) {
+        Date date = new Date(timestampInMillis);
+        java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
+        SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
+        String formattedDate = dateFormat.format(date) + " " + clockFormat.format(date);
+        return formattedDate;
     }
 
     public void onClick(View view) {
@@ -156,22 +159,18 @@ public class DetailsTaskActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance(timeZone);
         long currentTimeMillis = calendar.getTimeInMillis();
 
-
         ContentValues values = new ContentValues();
         values.put(TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID, taskId);
         values.put(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP, currentTimeMillis);
 
-        generateToast(db.insert(TaskContract.TimestampEntry.TABLE_NAME, null, values));
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        boolean dbError = db.insert(TaskContract.TimestampEntry.TABLE_NAME, null, values) == -1;
+        generateToast(dbError);
         finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 
-    private void generateToast(long info) {
+    private void generateToast(boolean error) {
         Toast toast;
-        if (info == -1) {
+        if (error) {
             toast = Toast.makeText(getApplicationContext(), R.string.msg_error_on_renew, Toast.LENGTH_LONG);
         } else {
             toast = Toast.makeText(getApplicationContext(), R.string.msg_renew, Toast.LENGTH_LONG);
