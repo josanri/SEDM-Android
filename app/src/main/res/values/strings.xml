@@ -15,7 +15,7 @@
     <string name="msg_yes">Yes</string>
     <string name="msg_no">No</string>
     <string name="not_done">Never done</string>
-    <string name="last_done">Last done</string>
+    <string name="last_done">Last time</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

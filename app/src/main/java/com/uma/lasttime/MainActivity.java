@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("Range")
     private void initList(){
         ArrayList<Task> arrayList = new ArrayList<>();
-        String[] columns = {
+        String[] columnsTask = {
                 TaskContract.TaskEntry.COLUMN_NAME_TITLE,
                 TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION,
                 TaskContract.TaskEntry._ID
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
-        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long idEntry) -> {
             Task task = arrayList.get(position);
             if (task != null) {
                 Intent intent = new Intent(getApplicationContext(), DetailsTaskActivity.class);
@@ -93,14 +93,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        listView.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+        listView.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long idDelete) -> {
             Task task = arrayList.get(position);
 
             new AlertDialog.Builder(this)
                     .setTitle(R.string.msg_remove_task)
                     .setPositiveButton(R.string.msg_yes, (DialogInterface dialog, int which) -> {
-                        String where = TaskContract.TaskEntry._ID+ " = ?";
-                        db.delete(TaskContract.TaskEntry.TABLE_NAME, where, new String[]{String.valueOf(task.getId())});
+                        String whereDelete = TaskContract.TaskEntry._ID+ " = ?";
+                        db.delete(TaskContract.TaskEntry.TABLE_NAME, whereDelete, new String[]{String.valueOf(task.getId())});
                         this.onRestart();
                     }).setNegativeButton(R.string.msg_no, (DialogInterface dialog, int which) -> {
                         dialog.dismiss();
