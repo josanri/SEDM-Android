@@ -6,6 +6,15 @@ public class Task {
     private Integer id;
     private String title;
     private String description;
+    private String lastDate;
+
+    public Task(Integer id, String title, String description, String lastDate) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.lastDate = lastDate;
+    }
+
     public Task(Integer id, String title, String description) {
         this.id = id;
         this.title = title;
@@ -34,7 +43,12 @@ public class Task {
 
     @Override
     public String toString() {
-        return title;
+        StringBuilder sb = new StringBuilder();
+        sb.append(title);
+        sb.append("\n");
+        sb.append(lastDate);
+
+        return sb.toString();
     }
 
     @Override

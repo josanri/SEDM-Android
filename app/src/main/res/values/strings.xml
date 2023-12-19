@@ -11,6 +11,8 @@
     <string name="msg_error_on_renew">Error while renewing</string>
     <string name="msg_added">Added</string>
     <string name="msg_error_on_add">Error while adding</string>
+    <string name="not_done">Never done</string>
+    <string name="last_done">Last done</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

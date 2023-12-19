@@ -12,4 +12,6 @@
     <string name="msg_error_on_renew">Error al renovar</string>
     <string name="msg_added">Añadida</string>
     <string name="msg_error_on_add">Error en la creación</string>
+    <string name="not_done">No realizada</string>
+    <string name="last_done">Ultima vez realizada</string>
 </resources>
