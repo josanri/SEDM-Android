@@ -19,10 +19,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private SQLiteDatabase db;
-    private TaskDbHelper dbHelper;
-
-    private ArrayList<String> arrayList;
-    private ArrayAdapter<String> adapter;
     private ListView listView;
 
     @SuppressLint("MissingInflatedId")
@@ -30,35 +26,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         TaskDbHelper dbHelper = new TaskDbHelper(getApplicationContext());
-        listView = (ListView) findViewById(R.id.listView);
         db = dbHelper.getReadableDatabase();
+        listView = (ListView) findViewById(R.id.listView);
         initList();
     }
 
     @SuppressLint("Range")
-    private void initList(){
+    private void initList() {
         ArrayList<Task> arrayList = new ArrayList<>();
         String[] columns = {
                 TaskContract.TaskEntry.COLUMN_NAME_TITLE,
                 TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION,
                 TaskContract.TaskEntry._ID
         };
-        Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, columns, null, null, null, null, null);
-        String title, description;
-        Integer id;
-        try{
-            while(cursor.moveToNext()){
+        try (Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, columns, null, null, null, null, null)) {
+            String title, description;
+            int id;
+            while (cursor.moveToNext()) {
                 title = cursor.getString(cursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_NAME_TITLE));
                 description = cursor.getString(cursor.getColumnIndex(TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION));
                 id = cursor.getInt(cursor.getColumnIndex(TaskContract.TaskEntry._ID));
                 arrayList.add(new Task(id, title, description));
             }
-        }finally {
-            cursor.close();
         }
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
-
         listView.setOnItemClickListener((parent, view, position, id1) -> {
             Task task = arrayList.get(position);
             if (task != null) {
@@ -71,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void goToCreateTask(View v){
+    public void goToCreateTask(View v) {
         Intent intent = new Intent(this, CreateTaskActivity.class);
         startActivity(intent);
         initList();
