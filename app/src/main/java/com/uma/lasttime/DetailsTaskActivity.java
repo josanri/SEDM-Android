@@ -121,9 +121,10 @@ public class DetailsTaskActivity extends AppCompatActivity {
         };
         String where = TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " = ?";
         String[] whereArgs = { taskId + "" };
+        String orderBy = TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DESC";
 
         ArrayList<String> arrayList = new ArrayList<>();
-        Cursor cursor = db.query(TaskContract.TimestampEntry.TABLE_NAME, columns, where, whereArgs, null, null, null);
+        Cursor cursor = db.query(TaskContract.TimestampEntry.TABLE_NAME, columns, where, whereArgs, null, null, orderBy);
         try {
             while (cursor.moveToNext()) {
                 long timestampInMillis = cursor.getLong(cursor.getColumnIndex(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP));
@@ -138,8 +139,8 @@ public class DetailsTaskActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> arrayAdapter;
-        arrayAdapter = new ArrayAdapter<>(this ,
-                android.R.layout.simple_list_item_1 ,
+        arrayAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1,
                 arrayList);
         listViewTimestamps.setAdapter(arrayAdapter);
     }
@@ -154,7 +155,6 @@ public class DetailsTaskActivity extends AppCompatActivity {
         TimeZone timeZone = TimeZone.getDefault();
         Calendar calendar = Calendar.getInstance(timeZone);
         long currentTimeMillis = calendar.getTimeInMillis();
-
 
         ContentValues values = new ContentValues();
         values.put(TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID, taskId);
