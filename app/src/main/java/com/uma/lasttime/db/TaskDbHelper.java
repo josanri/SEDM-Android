@@ -8,23 +8,34 @@ public class TaskDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Task.db";
 
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_TASK_ENTRIES =
             "CREATE TABLE " + TaskContract.TaskEntry.TABLE_NAME + " (" +
                     TaskContract.TaskEntry._ID + " INTEGER PRIMARY KEY," +
                     TaskContract.TaskEntry.COLUMN_NAME_TITLE + " TEXT," +
                     TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION + " TEXT)";
 
-    private static final String SQL_DELETE_ENTRIES =
+    private static final String SQL_CREATE_TIMESTAMP_ENTRIES =
+            "CREATE TABLE " + TaskContract.TimestampEntry.TABLE_NAME + " (" +
+                    TaskContract.TimestampEntry._ID + " INTEGER PRIMARY KEY," +
+                    TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DATE," +
+                    TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " INTEGER)";
+
+    private static final String SQL_DELETE_TASK_ENTRIES =
             "DROP TABLE IF EXISTS " + TaskContract.TaskEntry.TABLE_NAME;
+
+    private static final String SQL_DELETE_TIMESTAMP_ENTRIES =
+            "DROP TABLE IF EXISTS " + TaskContract.TimestampEntry.TABLE_NAME;
 
     public TaskDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_TASK_ENTRIES);
+        db.execSQL(SQL_CREATE_TIMESTAMP_ENTRIES);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(SQL_DELETE_ENTRIES);
+        db.execSQL(SQL_DELETE_TASK_ENTRIES);
+        db.execSQL(SQL_DELETE_TIMESTAMP_ENTRIES);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
