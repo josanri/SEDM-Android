@@ -12,4 +12,7 @@
     <string name="msg_error_on_renew">Error al renovar</string>
     <string name="msg_added">Añadida</string>
     <string name="msg_error_on_add">Error en la creación</string>
+    <string name="msg_remove_task">¿Quieres eliminar esta tarea?</string>
+    <string name="msg_yes">Sí</string>
+    <string name="msg_no">No</string>
 </resources>

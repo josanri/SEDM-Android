@@ -11,6 +11,9 @@
     <string name="msg_error_on_renew">Error while renewing</string>
     <string name="msg_added">Added</string>
     <string name="msg_error_on_add">Error while adding</string>
+    <string name="msg_remove_task">Do you want to remove this task?</string>
+    <string name="msg_yes">Yes</string>
+    <string name="msg_no">No</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

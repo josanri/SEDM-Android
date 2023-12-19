@@ -3,11 +3,14 @@ package com.uma.lasttime;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -51,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
-        listView.setOnItemClickListener((parent, view, position, id1) -> {
+        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long id) -> {
             Task task = arrayList.get(position);
             if (task != null) {
                 Intent intent = new Intent(getApplicationContext(), DetailsTaskActivity.class);
@@ -60,6 +63,20 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
+        });
+        listView.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long id) -> {
+            Task task = arrayList.get(position);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.msg_remove_task)
+                    .setPositiveButton(R.string.msg_yes, (DialogInterface dialog, int which) -> {
+                        String where = TaskContract.TaskEntry._ID+ " = ?";
+                        db.delete(TaskContract.TaskEntry.TABLE_NAME, where, new String[]{String.valueOf(task.getId())});
+                        this.onRestart();
+                    }).setNegativeButton(R.string.msg_no, (DialogInterface dialog, int which) -> {
+                        dialog.dismiss();
+                    }).create().show();
+            return true;
         });
     }
 
