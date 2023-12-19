@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitleCreate" />
+        app:layout_constraintTop_toBottomOf="@+id/textTitleCreate"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/app_title"
@@ -32,11 +33,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/descriptionTitleDetail"
+        android:id="@+id/textDescriptionCreate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="148dp"
+        android:labelFor="@id/editTextDescriptionCreate"
         android:text="@string/text_description"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitleCreate" />
@@ -47,29 +49,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="36dp"
         android:layout_marginTop="88dp"
+        android:labelFor="@id/editTextTitleCreate"
         android:text="@string/text_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="335dp"
-        android:layout_height="238dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTitleDetail" />
-
     <Button
         android:id="@+id/addNewTaskButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="62dp"
+        android:layout_width="342dp"
+        android:layout_height="63dp"
+        android:onClick="addNewTask"
         android:text="@string/text_add"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.391"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextDescriptionCreate"
+        app:layout_constraintVertical_bias="0.454" />
+
+    <EditText
+        android:id="@+id/editTextDescriptionCreate"
+        android:layout_width="341dp"
+        android:layout_height="293dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textDescriptionCreate"
+        android:autofillHints="" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
