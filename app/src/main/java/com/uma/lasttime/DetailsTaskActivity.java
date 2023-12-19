@@ -1,7 +1,6 @@
 package com.uma.lasttime;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -162,11 +161,7 @@ public class DetailsTaskActivity extends AppCompatActivity {
         values.put(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP, currentTimeMillis);
 
         generateToast(db.insert(TaskContract.TimestampEntry.TABLE_NAME, null, values));
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
     }
 
     private void generateToast(long info) {

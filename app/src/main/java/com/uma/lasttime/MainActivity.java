@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -45,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 TaskContract.TaskEntry._ID
         };
         Cursor cursor = db.query(TaskContract.TaskEntry.TABLE_NAME, columns, null, null, null, null, null);
-        Task task;
-        String title = "", description = "";
+        String title, description;
         Integer id;
         try{
             while(cursor.moveToNext()){
@@ -61,28 +59,27 @@ public class MainActivity extends AppCompatActivity {
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView <?> parent, View view, int position, long id) {
-                Task task = arrayList.get(position);
-                if (task != null) {
-                    Intent intento = new Intent(getApplicationContext(), DetailsTaskActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("taskId", String.valueOf(task.getId()));
-                    intento.putExtras(bundle);
-                    finish();
-                    overridePendingTransition(0, 0);
-                    startActivity(intento);
-                    overridePendingTransition(0, 0);
-                }
+        listView.setOnItemClickListener((parent, view, position, id1) -> {
+            Task task = arrayList.get(position);
+            if (task != null) {
+                Intent intent = new Intent(getApplicationContext(), DetailsTaskActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("taskId", String.valueOf(task.getId()));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }
 
-
     public void goToCreateTask(View v){
         Intent intent = new Intent(this, CreateTaskActivity.class);
         startActivity(intent);
+        initList();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
         initList();
     }
 
