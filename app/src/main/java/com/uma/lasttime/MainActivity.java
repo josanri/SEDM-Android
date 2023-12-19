@@ -39,47 +39,33 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("Range")
     private void initList(){
         ArrayList<Task> arrayList = new ArrayList<>();
-        String[] columnsTask = {
-                TaskContract.TaskEntry.COLUMN_NAME_TITLE,
-                TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION,
-                TaskContract.TaskEntry._ID
-        };
-        Cursor cursorTask = db.query(TaskContract.TaskEntry.TABLE_NAME, columnsTask, null, null, null, null, null);
+        String query = "SELECT " +
+                "t." + TaskContract.TaskEntry._ID + ", " +
+                "t." + TaskContract.TaskEntry.COLUMN_NAME_TITLE + ", " +
+                "t." + TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION + ", " +
+                "MAX(" + TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + ") as timestamp " +
+                "FROM " + TaskContract.TaskEntry.TABLE_NAME + " t " +
+                "LEFT JOIN " + TaskContract.TimestampEntry.TABLE_NAME + " ts ON t." + TaskContract.TaskEntry._ID + " = ts." + TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID +
+                " GROUP BY t." + TaskContract.TaskEntry._ID +
+                " ORDER BY MAX(ts." + TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + ") DESC";
 
-        String[] columnsTimestamps = {
-                TaskContract.TimestampEntry._ID,
-                TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP,
-                TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID
-        };
-        String where = TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID + " = ?";
-        String orderBy = TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP + " DESC";
-
-        String title = "", description = "";
-        Integer id;
-        try{
-            while(cursorTask.moveToNext()){
-                title = cursorTask.getString(cursorTask.getColumnIndex(TaskContract.TaskEntry.COLUMN_NAME_TITLE));
-                description = cursorTask.getString(cursorTask.getColumnIndex(TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION));
-                id = cursorTask.getInt(cursorTask.getColumnIndex(TaskContract.TaskEntry._ID));
-
-                String[] whereArgs = { id + "" };
-                Cursor cursorTimestamp = db.query(TaskContract.TimestampEntry.TABLE_NAME, columnsTimestamps, where, whereArgs, null, null, orderBy);
-
-                if(cursorTimestamp.moveToNext()){
-                    long timestampInMillis = cursorTimestamp.getLong(cursorTimestamp.getColumnIndex(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP));
+        try (Cursor cursor = db.rawQuery(query, null)) {
+            while (cursor.moveToNext()) {
+                int id = cursor.getInt(cursor.getColumnIndex("t." + TaskContract.TaskEntry._ID));
+                String title = cursor.getString(cursor.getColumnIndex("t." + TaskContract.TaskEntry.COLUMN_NAME_TITLE));
+                String description = cursor.getString(cursor.getColumnIndex("t." + TaskContract.TaskEntry.COLUMN_NAME_DESCRIPTION));
+                long timestampInMillis = cursor.getLong(cursor.getColumnIndex("timestamp"));
+                if (timestampInMillis != 0) {
                     Date date = new Date(timestampInMillis);
                     java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
                     SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
                     String formattedDate = dateFormat.format(date) + " " + clockFormat.format(date);
 
                     arrayList.add(new Task(id, title, description, getString(R.string.last_done) + ": " + formattedDate));
-                }else {
+                } else {
                     arrayList.add(new Task(id, title, description, getString(R.string.not_done)));
                 }
-
             }
-        }finally {
-            cursorTask.close();
         }
 
         listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
