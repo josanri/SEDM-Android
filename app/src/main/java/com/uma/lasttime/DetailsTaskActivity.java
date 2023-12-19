@@ -17,8 +17,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.uma.lasttime.db.TaskContract;
 import com.uma.lasttime.db.TaskDbHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class DetailsTaskActivity extends AppCompatActivity {
     private TaskDbHelper taskDbHelper;
@@ -127,7 +130,8 @@ public class DetailsTaskActivity extends AppCompatActivity {
                 long timestampInMillis = cursor.getLong(cursor.getColumnIndex(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP));
                 Date date = new Date(timestampInMillis);
                 java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(getApplicationContext());
-                String formattedDate = dateFormat.format(date);
+                SimpleDateFormat clockFormat = new SimpleDateFormat("HH:mm:ss");
+                String formattedDate = dateFormat.format(date) + " " + clockFormat.format(date);
                 arrayList.add(formattedDate);
             }
         } finally {
@@ -148,14 +152,16 @@ public class DetailsTaskActivity extends AppCompatActivity {
     }
 
     private void updateTimestamp() {
-        long timestamp = System.currentTimeMillis();
+        TimeZone timeZone = TimeZone.getDefault();
+        Calendar calendar = Calendar.getInstance(timeZone);
+        long currentTimeMillis = calendar.getTimeInMillis();
+
 
         ContentValues values = new ContentValues();
         values.put(TaskContract.TimestampEntry.COLUMN_NAME_TASK_ID, taskId);
-        values.put(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP, timestamp);
+        values.put(TaskContract.TimestampEntry.COLUMN_NAME_TIMESTAMP, currentTimeMillis);
 
         generateToast(db.insert(TaskContract.TimestampEntry.TABLE_NAME, null, values));
-        finish();
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         finish();
         overridePendingTransition(0, 0);

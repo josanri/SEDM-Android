@@ -56,7 +56,7 @@
     <TextView
         android:id="@+id/titleDetail"
         android:layout_width="343dp"
-        android:layout_height="25dp"
+        android:layout_height="40dp"
         android:layout_marginTop="116dp"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
