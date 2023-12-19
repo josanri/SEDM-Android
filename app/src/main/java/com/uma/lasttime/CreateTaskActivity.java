@@ -47,7 +47,7 @@ public class CreateTaskActivity extends AppCompatActivity {
         if (error) {
             Toast.makeText(getApplicationContext(), R.string.msg_error_on_renew, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(getApplicationContext(), R.string.msg_renew, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), R.string.msg_added, Toast.LENGTH_LONG).show();
             finish();
         }
     }
