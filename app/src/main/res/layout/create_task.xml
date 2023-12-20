@@ -63,14 +63,13 @@
         android:id="@+id/addNewTaskButton"
         android:layout_width="342dp"
         android:layout_height="63dp"
+        android:layout_marginBottom="16dp"
         android:onClick="addNewTask"
         android:text="@string/text_add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextDescriptionCreate"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintHorizontal_bias="0.55"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextDescriptionCreate"
