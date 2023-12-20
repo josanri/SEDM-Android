@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.uma.lasttime.db.TaskContract;
@@ -30,15 +31,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         TaskDbHelper dbHelper = new TaskDbHelper(getApplicationContext());
-        listView = (ListView) findViewById(R.id.listView);
         db = dbHelper.getReadableDatabase();
+
+        listView = (ListView) findViewById(R.id.listView);
         initList();
+
+        Button goToCreateTaskButton = findViewById(R.id.goToCreate);
+        goToCreateTaskButton.setOnClickListener(this::goToCreateTask);
+    }
+
+    private void initList() {
+        ArrayList<Task> arrayList = new ArrayList<>();
+        getTasks(arrayList);
+
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
+        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long idEntry) -> {
+            Task task = arrayList.get(position);
+            if (task != null) {
+                Intent intent = new Intent(getApplicationContext(), DetailsTaskActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("taskId", String.valueOf(task.getId()));
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+        listView.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long idDelete) -> {
+            Task task = arrayList.get(position);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.msg_remove_task)
+                    .setPositiveButton(R.string.msg_yes, (DialogInterface dialog, int which) -> {
+                        String whereDelete = TaskContract.TaskEntry._ID + " = ?";
+                        db.delete(TaskContract.TaskEntry.TABLE_NAME, whereDelete, new String[]{String.valueOf(task.getId())});
+                        this.onRestart();
+                    }).setNegativeButton(R.string.msg_no, (DialogInterface dialog, int which) -> {
+                        dialog.dismiss();
+                    }).create().show();
+            return true;
+        });
     }
 
     @SuppressLint("Range")
-    private void initList(){
-        ArrayList<Task> arrayList = new ArrayList<>();
+    private void getTasks(ArrayList<Task> arrayList) {
         String query = "SELECT " +
                 "t." + TaskContract.TaskEntry._ID + ", " +
                 "t." + TaskContract.TaskEntry.COLUMN_NAME_TITLE + ", " +
@@ -67,35 +103,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, arrayList));
-        listView.setOnItemClickListener((AdapterView<?> parent, View view, int position, long idEntry) -> {
-            Task task = arrayList.get(position);
-            if (task != null) {
-                Intent intent = new Intent(getApplicationContext(), DetailsTaskActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("taskId", String.valueOf(task.getId()));
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-        });
-        listView.setOnItemLongClickListener((AdapterView<?> parent, View view, int position, long idDelete) -> {
-            Task task = arrayList.get(position);
-
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.msg_remove_task)
-                    .setPositiveButton(R.string.msg_yes, (DialogInterface dialog, int which) -> {
-                        String whereDelete = TaskContract.TaskEntry._ID+ " = ?";
-                        db.delete(TaskContract.TaskEntry.TABLE_NAME, whereDelete, new String[]{String.valueOf(task.getId())});
-                        this.onRestart();
-                    }).setNegativeButton(R.string.msg_no, (DialogInterface dialog, int which) -> {
-                        dialog.dismiss();
-                    }).create().show();
-            return true;
-        });
     }
 
-    public void goToCreateTask(View v){
+    public void goToCreateTask(View v) {
         Intent intent = new Intent(this, CreateTaskActivity.class);
         startActivity(intent);
         initList();
